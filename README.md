@@ -12,6 +12,24 @@ Get [docker](https://docs.docker.com/engine/installation/linux/ubuntu/) and [doc
 ### Before installation
 configure each DB's ID and PW in .env file for your purpose.
 ### Linux
+Before running servers, we need to disable the systemd-resolved service and stop it. Otherwise, it causes to "port 53" problem or when we kill this service using another way, it works very slow.
+```shell
+$ sudo systemctl disable systemd-resolved.service
+$ sudo service systemd-resolved stop
+```
+
+Put the following line in the [main] section of your /etc/NetworkManager/NetworkManager.conf:
+  dns=default
+Delete the symlink /etc/resolv.conf
+```shell
+rm /etc/resolv.conf
+```
+
+Restart network-manager
+```shell
+sudo service network-manager restart
+```
+
 You can install ONS management server comprised of authentification(postgreSQL), access control(Neo4J), web app(Node.js), web API(Node.js).
 ```shell
 $ bash deploy_manage_server.sh
